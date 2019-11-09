@@ -1,0 +1,40 @@
+{
+  "initialCourses": [0, 1, 2],
+  "data": [
+    {
+      "id": 0,
+      "name": "Curso Profesional de Git y Github",
+      "asset": "github.png",
+      "short": "github",
+      "recommended": [1, 2, 3, 4]
+    },
+    {
+      "id": 1,
+      "name": "Curso de Programación Básica",
+      "asset": "programar.png",
+      "short": "programar",
+      "recommended": [2, 0, 3, 4]
+    },
+    {
+      "id": 2,
+      "name": "Curso de Terminal y Línea de Comandos",
+      "asset": "terminal.png",
+      "short": "terminal",
+      "recommended": [3, 4, 1, 0]
+    },
+    {
+      "id": 3,
+      "name": "Curso básico de Algoritmos",
+      "asset": "algoritmos.png",
+      "short": "algoritmos",
+      "recommended": [4, 2, 1, 0]
+    },
+    {
+      "id": 4,
+      "name": "Curso de Administración de Servidores Linux",
+      "asset": "linux.png",
+      "short": "linux",
+      "recommended": [3, 2, 1, 0]
+    }
+  ]
+}
