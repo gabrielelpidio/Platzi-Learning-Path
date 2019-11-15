@@ -11,7 +11,9 @@
     "@zeit/next-css": "^1.0.1",
     "next": "9.1.2",
     "react": "16.11.0",
-    "react-dom": "16.11.0"
+    "react-dom": "16.11.0",
+    "react-icons": "^3.8.0",
+    "react-spring": "^8.0.27"
   },
   "devDependencies": {
     "autoprefixer": "^9.7.1",
