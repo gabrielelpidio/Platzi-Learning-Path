@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useTransition, animated } from 'react-spring';
+import React, { useState, useEffect } from 'react';
+import { useTransition, animated, config } from 'react-spring';
+import dynamic from 'next/dynamic';
 
 import Head from 'next/head';
 import '../styles/main.css';
@@ -7,6 +8,14 @@ import { CourseCard } from '../components/CourseCard';
 import { data, initialCourses } from '../db/db.json';
 import userMockup from '../db/userMock.json';
 import { CourseSelector } from '../components/CourseSelector';
+import { Header } from '../components/Header';
+import { Modal } from '../components/Modal';
+const CaptureScreen = dynamic(
+  () => import('../components/CaptureScreen').then(e => e.CaptureScreen),
+  {
+    ssr: false
+  }
+);
 
 const AnimatedCourseCard = animated(CourseCard);
 
@@ -26,12 +35,15 @@ const Home = () => {
     },
     leave: {
       opacity: 0
+    },
+    config: {
+      ...config.wobbly,
+      clamp: true
     }
   });
 
   const handleSelectorClick = course => {
     setCourses([...courses, course]);
-    console.log(courses);
     setRecommended(
       filterRecommended(
         course.recommended,
@@ -40,35 +52,26 @@ const Home = () => {
     );
   };
 
+  const handleRemoveClick = id => {
+    setCourses(courses.filter(e => e.id !== id));
+  };
+
   const filterRecommended = (recommendedList, coursesIdList) =>
     recommendedList.filter(
       recommendedId => coursesIdList.indexOf(recommendedId) === -1
     );
 
   return (
-    <div className="">
+    <div className="relative">
       <Head>
         <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="w-full h-64">
-        <div className="bg-platzi w-full h-56 shadow-md flex justify-center font-header border-b-8 border-green-500">
-          <h1 className="text-2xl text-white my-auto text-center">
-            {`Crea tu propia ruta de aprendizaje ${user.name}`}
-          </h1>
-        </div>
-        <div className="rounded-full">
-          <img
-            src={user.image}
-            alt=""
-            className="rounded-full h-24 mx-auto -my-12 shadow-lg"
-          />
-        </div>
-      </header>
+      <Header username={user.name} userImg={user.img} />
 
-      <article className="sm:block">
-        <div className="m-5 sm:w-full">
+      <main className="sm:block">
+        <div className="p-5 sm:w-full flex justify-between">
           <CourseSelector
             coursesId={
               recommended.length === 0 && courses.length === 0
@@ -77,6 +80,7 @@ const Home = () => {
             }
             handleClick={handleSelectorClick}
           />
+          {<CaptureScreen className="flex-end" items={courses.length} />}
         </div>
 
         <animated.div className="container flex flex-wrap mx-auto justify-center sm:w-full  ">
@@ -85,17 +89,18 @@ const Home = () => {
               <animated.div key={key} style={props}>
                 <AnimatedCourseCard
                   key={key}
+                  id={item.id}
                   title={item.name}
                   logo={`/${item.asset}`}
                   style={props}
+                  handleRemoveClick={handleRemoveClick}
                   short=" "
                 />
               </animated.div>
             );
           })}
-          <CourseCard title={data[4].name} logo={data[4].asset} />
         </animated.div>
-      </article>
+      </main>
     </div>
   );
 };
